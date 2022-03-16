@@ -1,0 +1,90 @@
+<h1 class="titleMoradito" style="margin-left: 1.38%">Gestión de clientes</h1>
+<hr align="left" class="highlighter" style="margin-left: 1.38%" />
+<div class="row justify-content-center mt-3">
+  <button
+    mat-button
+    color="primary"
+    style="font-size: 16px"
+    (click)="Modal(null)"
+  >
+    Agregar Cliente
+    <button
+      mat-mini-fab
+      color="primary"
+      aria-label="Example icon button with a delete icon"
+      style="margin-left: 4px; margin-bottom: 3px"
+    >
+      <mat-icon>person_add</mat-icon>
+    </button>
+  </button>
+</div>
+<div class="row justify-content-center" style="margin-top: 40px">
+  <div class="col-md-10">
+    <div class="table-responsive-sm">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Fecha nacimiento</th>
+            <th>Sexo</th>
+            <th>Teléfonos</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of ClientList; let i = index">
+            <td>{{ c.name }}</td>
+            <td>{{ c.lastName }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.birthday | date: "dd/MM/yyyy" }}</td>
+            <td>{{ c.sex === "m" ? "Masculino" : "Femenino" }}</td>
+            <td>
+              <a
+                style="color: black; margin-left: 6px; cursor: pointer"
+                data-toggle="collapse"
+                [attr.data-target]="'#collapseItem' + i"
+                aria-expanded="true"
+              >
+                <i style="color: #039687" class="fa fa-eye"></i
+                ><span style="font-weight: 500; margin-left: 5px"
+                  >Ver Telefonos</span
+                >
+              </a>
+            </td>
+            <td>
+              <a
+                style="color: #04665c; margin-right: 5px"
+                class="selected"
+                class="btnDetailsIcon"
+                (click)="Modal(c?.id)"
+                matTooltip="Editar"
+                matTooltipPosition="below"
+                matTooltipClass="mat-tooltip"
+                ><i class="fa fa-pencil"></i
+              ></a>
+              <a
+                style="color: #04665c"
+                class="selected"
+                class="btnDetailsIcon"
+                (click)="delete(c?.id)"
+                matTooltip="Eliminar"
+                matTooltipPosition="below"
+                matTooltipClass="mat-tooltip"
+                ><i class="fa fa-trash"></i
+              ></a>
+            </td>
+            <div [id]="'collapseItem' + i" class="collapse">
+              <ul class="list-group list-group-flush">
+                <li *ngFor="let phone of c.phones" class="list-group-item">
+                  <span style="font-size: 15px">{{ phone }}</span>
+                </li>
+              </ul>
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

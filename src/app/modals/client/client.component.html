@@ -1,0 +1,171 @@
+<div class="row justify-content-center mt-2">
+  <h2>{{ Editing ? "Actualizar" : "Agregar" }} cliente</h2>
+</div>
+
+<div class="row mt-2" style="padding: 5px">
+  <div class="col-12">
+    <form
+      class="clientForm"
+      id="login-form"
+      name="clientForm"
+      #clientForm="ngForm"
+      (ngSubmit)="clientForm.valid && selectSex.valid && addOrUpdate()"
+      autocomplete="off"
+    >
+      <div class="col mt-3">
+        <mat-form-field class="example-full-width" appearance="legacy">
+          <mat-label>Nombre</mat-label>
+          <input
+            matInput
+            required
+            [(ngModel)]="Client.name"
+            name="name"
+            #name="ngModel"
+          />
+          <mat-error *ngIf="name.errors?.required">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width" appearance="legacy">
+          <mat-label>Apellido</mat-label>
+          <input
+            matInput
+            required
+            [(ngModel)]="Client.lastName"
+            name="lastname"
+            #lastname="ngModel"
+          />
+          <mat-error *ngIf="lastname.errors?.required">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width" appearance="legacy">
+          <mat-label>Correo</mat-label>
+          <input
+            matInput
+            [(ngModel)]="Client.email"
+            required
+            type="email"
+            name="email"
+            #email="ngModel"
+            email="true"
+          />
+          <mat-error *ngIf="email.errors?.required">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="email.errors?.email">
+            Debe escribir un correo válido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Fecha de Nacimiento</mat-label>
+          <input
+            required
+            matInput
+            required
+            [max]="maxDate"
+            [matDatepicker]="picker"
+            [(ngModel)]="Client.birthday"
+            name="birthday"
+            #birthday="ngModel"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="birthday.errors?.required">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-select
+            placeholder="Sexo"
+            [(ngModel)]="Client.sex"
+            required
+            [formControl]="selectSex"
+          >
+            <mat-option *ngFor="let b of sexList" [value]="b.value">
+              {{ b?.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="selectSex.hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col-10">
+            <mat-form-field class="example-full-width" appearance="legacy">
+              <mat-label>Teléfono</mat-label>
+              <input
+                matInput
+                required
+                [(ngModel)]="phone"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <mat-error *ngIf="Client.phones.length === 0">
+                Por favor agregue por lo menos un número de teléfono
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-2">
+            <button
+              mat-mini-fab
+              color="primary"
+              aria-label="Example icon button with a delete icon"
+              style="margin-top: 10px"
+              (click)="addPhone()"
+              [disabled]="phone.length === 0"
+              type="button"
+            >
+              <mat-icon>plus_one</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <ul class="list-group list-group-flush">
+              <li *ngFor="let phone of Client.phones" class="list-group-item">
+                <span style="font-size: 15px">{{ phone }}</span>
+                <button
+                  mat-mini-fab
+                  color="primary"
+                  aria-label="Example icon button with a delete icon"
+                  style="margin-left: 5px"
+                  (click)="removePhone(phone)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="row">
+          <div class="col-12 text-center">
+            <button
+              class="btn btn-primary"
+              mat-button
+              type="submit"
+              name="savebutton"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
